@@ -178,7 +178,10 @@ $.blockUI.defaults = {
 	onUnblock: null,
 
 	// don't ask; if you really must know: http://groups.google.com/group/jquery-en/browse_thread/thread/36640a8730503595/2f6a79a77a78e493#2f6a79a77a78e493
-	quirksmodeOffsetHack: 4
+	quirksmodeOffsetHack: 4,
+	
+	// set to 'form' this to work with ASP.NET WebForms
+	pageElement: 'body'
 };
 
 // private data and functions follow...
@@ -266,8 +269,8 @@ function install(el, opts) {
 	if ($.browser.msie || opts.forceIframe)
 		lyr1.css('opacity',0.0);
 
-	//$([lyr1[0],lyr2[0],lyr3[0]]).appendTo(full ? 'body' : el);
-	var layers = [lyr1,lyr2,lyr3], $par = full ? $('body') : $(el);
+	//$([lyr1[0],lyr2[0],lyr3[0]]).appendTo(full ? pageElement : el);
+	var layers = [lyr1,lyr2,lyr3], $par = full ? $(pageElement) : $(el);
 	$.each(layers, function() {
 		this.appendTo($par);
 	});
@@ -383,7 +386,7 @@ function remove(el, opts) {
 	
 	var els;
 	if (full) // crazy selector to handle odd field errors in ie6/7
-		els = $('body').children().filter('.blockUI').add('body > .blockUI');
+		els = $(pageElement).children().filter('.blockUI').add(pageElement + ' > .blockUI');
 	else
 		els = $('.blockUI', el);
 
